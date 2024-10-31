@@ -1,5 +1,6 @@
 '''
-A summary comment:
+A code summary with comments explaining its functionality at necessary points:
+
 This code uses a pre-trained VGG19 model to classify sound data represented as spectrogram images. 
 The dataset is loaded from a CSV file, with images pre-processed and split into training and validation sets. 
 Key functionalities include defining a custom PyTorch Dataset, applying data transformations, freezing VGG19's convolutional layers, and training a modified classifier. 
