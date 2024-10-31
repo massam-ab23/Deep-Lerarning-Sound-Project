@@ -1,5 +1,5 @@
 '''
-summary:
+A summary comment of the code:
 This `parameters.py` file sets key hyperparameters and configuration values for a sound classification model. 
 It defines parameters such as the number of classes, batch size, learning rate, number of epochs, and device type. 
 It also specifies the directory paths for saving model checkpoints and accessing images, ensuring these values can be easily imported and referenced across various scripts. 
@@ -9,10 +9,10 @@ Additionally, it defines `CLASS_LIST`, which provides class labels used in class
 # Define the number of output classes for the model based on available classes
 NUM_CLASSES = 10  # Initial example value
 
-# Set batch size for training and validation
+# Setting batch size for training and validation
 BATCH_SIZE = 128  # Example batch size
 
-# Set learning rate for the optimizer
+# Setting learning rate for the optimizer
 LEARNING_RATE = 0.0001  # Learning rate
 
 # Define the number of training epochs
@@ -34,7 +34,7 @@ CLASS_LIST = ['class1', 'class2', 'class3', ..., 'class10']  # Placeholder class
 CLASS_LIST = ['Bark', 'Burping_or_eructation', 'Cough', 'Laughter', 'Unknown']  # Actual class labels
 NUM_CLASSES = len(CLASS_LIST)  # Dynamically set NUM_CLASSES based on class list length
 
-# Specify the device type, useful for TPU usage
+# Specifying the device type, useful for TPU usage
 DEVICE = 'xla'  # For TPU; use 'cuda' for GPU or 'cpu' if neither available
 
 # Changing to the working directory containing sound classification files in Google Drive
