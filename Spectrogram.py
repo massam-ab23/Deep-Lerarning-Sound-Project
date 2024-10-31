@@ -1,5 +1,5 @@
 '''
-summary:
+A summary comment:
 This code uses a pre-trained VGG19 model to classify sound data represented as spectrogram images. 
 The dataset is loaded from a CSV file, with images pre-processed and split into training and validation sets. 
 Key functionalities include defining a custom PyTorch Dataset, applying data transformations, freezing VGG19's convolutional layers, and training a modified classifier. 
@@ -18,7 +18,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import parameters  # Imports class list and batch size parameters
 
-# Check if GPU is available, otherwise use CPU
+# Checking if GPU is available, otherwise use CPU
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # Custom Dataset for Spectrogram Images
@@ -42,18 +42,18 @@ class SoundDataset(Dataset):
         except FileNotFoundError:
             return None  # Return None if image is missing
 
-        label = self.labels.iloc[idx, 1]  # Get label for image
-        label = self.label_to_idx[label]  # Map label to index
-        label = torch.tensor(label)  # Convert label to tensor
+        label = self.labels.iloc[idx, 1]  # Getting label for image
+        label = self.label_to_idx[label]  # Mapping label to index
+        label = torch.tensor(label)  # Convertting label to tensor
 
         if self.transform:
-            image = self.transform(image)  # Apply transformations
+            image = self.transform(image)  # Applying transformations
 
         return image, label
 
 # DataLoader filter function to skip None entries
 def collate_fn(batch):
-    batch = [b for b in batch if b is not None]  # Skip missing images
+    batch = [b for b in batch if b is not None]  # Skipping missing images
     if len(batch) == 0:
         return None, None
 
@@ -64,17 +64,17 @@ def collate_fn(batch):
 transform = transforms.Compose([
     transforms.Resize((224, 224)),  # Resize to 224x224
     transforms.ToTensor(),  # Convert image to tensor
-    transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])  # Normalize for ImageNet weights
+    transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])  # Normalizing for ImageNet weights
 ])
 
-# Set paths for CSV and image directory
+# Setting paths for CSV and image directory
 train_csv = "/content/drive/MyDrive/SoundClassification/train5Filipa.csv"
 img_dir = '/content/drive/MyDrive/SoundClassification/trainIMG/Spectrogram_images/'
 
 # Dataset for Spectrogram Images
 dataset = SoundDataset(csv_file=train_csv, img_dir=img_dir, transform=transform, num_samples=1000)
 
-# Split dataset into 80% train and 20% validation
+# Splitting dataset into 80% train and 20% validation
 train_size = int(0.8 * len(dataset))
 val_size = len(dataset) - train_size
 train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
@@ -83,8 +83,8 @@ train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
 train_loader = DataLoader(train_dataset, batch_size=parameters.BATCH_SIZE, shuffle=True, collate_fn=collate_fn)
 val_loader = DataLoader(val_dataset, batch_size=parameters.BATCH_SIZE, shuffle=False, collate_fn=collate_fn)
 
-# Load pre-trained VGG19 model and modify for classification task
-vgg19 = models.vgg19(weights=models.VGG19_Weights.IMAGENET1K_V1)  # Load VGG19 pretrained on ImageNet
+# Loadded pre-trained VGG19 model and modify for classification task
+vgg19 = models.vgg19(weights=models.VGG19_Weights.IMAGENET1K_V1)  # Loadded VGG19 pretrained on ImageNet
 for param in vgg19.features.parameters():
     param.requires_grad = False  # Freeze convolutional layers
 
@@ -99,11 +99,11 @@ vgg19.classifier = nn.Sequential(
     nn.LogSoftmax(dim=1)
 )
 
-# Move model to device (GPU or CPU)
+# Moving model to device (GPU or CPU)
 vgg19 = vgg19.to(device)
 
 # Define the learning rate directly here
-LEARNING_RATE = 0.0002  # Set learning rate for optimizer
+LEARNING_RATE = 0.0002  # Setting learning rate for optimizer
 
 # Loss function and optimizer
 criterion = nn.CrossEntropyLoss()  # Cross-entropy for classification
@@ -122,17 +122,17 @@ def train_model():
     train_accuracies = []
     val_accuracies = []
 
-    NUM_EPOCHS = 20  # Set number of epochs
+    NUM_EPOCHS = 20  # Setting number of epochs
     for epoch in range(0, NUM_EPOCHS):
 
-        vgg19.train()  # Set model to training mode
+        vgg19.train()  # Setting model to training mode
         running_loss = 0.0
         correct_train = 0.0
         total_train = 0.0
 
         for i, batch in enumerate(train_loader):
             if batch is None:
-                continue  # Skip empty batches
+                continue  # Skipping empty batches
 
             images, labels = batch
             images, labels = images.to(device), labels.to(device)
@@ -163,7 +163,7 @@ def train_model():
         with torch.no_grad():
             for i, batch in enumerate(val_loader):
                 if batch is None:
-                    continue  # Skip empty batches
+                    continue  # Skipping empty batches
 
                 images, labels = batch
                 images, labels = images.to(device), labels.to(device)
@@ -189,12 +189,12 @@ def train_model():
         train_accuracies.append(train_accuracy.item())
         val_accuracies.append(val_accuracy.item())
 
-        # Print metrics
+        # Printting metrics
         print(f"Epoch [{epoch+1}/{NUM_EPOCHS}], "
               f"Train Loss: {train_loss:.4f}, Train Accuracy: {train_accuracy:.4f}, "
               f"Val Loss: {val_loss:.4f}, Val Accuracy: {val_accuracy:.4f}")
 
-    # Print final training and validation accuracy
+    # Printting final training and validation accuracy
     final_training_accuracy = train_accuracies[-1]
     final_validation_accuracy = val_accuracies[-1]
 
@@ -213,7 +213,7 @@ def train_model():
     plt.title("Model Accuracy")
     plt.legend()
 
-    # Loss Plot
+    # Loss Plotting
     plt.subplot(1, 2, 2)
     plt.plot(train_losses, label="Training Loss")
     plt.plot(val_losses, label="Validation Loss")
@@ -225,7 +225,7 @@ def train_model():
     plt.tight_layout()
     plt.show()
 
-    # Plot final confusion matrix after training
+    # Plotting final confusion matrix after training
     cm = confusion_matrix(all_labels, all_preds)
     plt.figure(figsize=(8, 6))
     sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=parameters.CLASS_LIST, yticklabels=parameters.CLASS_LIST)
