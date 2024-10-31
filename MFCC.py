@@ -1,5 +1,5 @@
 '''
-summary:
+Here is a summary comment:
 This code implements a sound classification model using a pre-trained VGG19 network to classify sound data transformed into MFCC image representations. 
 The dataset is loaded from a CSV file, with images pre-processed and split into training and validation sets. Key operations include defining a custom PyTorch Dataset, setting up data transformations, implementing the training and validation loop, and displaying training metrics. 
 The final output includes accuracy/loss plots and a confusion matrix visualizing model performance.
@@ -17,7 +17,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import parameters  # Imports all predefined parameters
 
-# Check if GPU is available, otherwise use CPU
+# Checking if GPU is available, otherwise use CPU
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # Custom Dataset for MFCC Images
@@ -37,22 +37,22 @@ class SoundDataset(Dataset):
     def __getitem__(self, idx):
         img_name = os.path.join(self.img_dir, self.labels.iloc[idx, 0])  # Path to image file
         try:
-            image = Image.open(img_name).convert('RGB')  # Load image as RGB
+            image = Image.open(img_name).convert('RGB')  # Loadded image as RGB
         except FileNotFoundError:
             return None  # Return None if image is missing
 
-        label = self.labels.iloc[idx, 1]  # Get label for image
-        label = self.label_to_idx[label]  # Map label to index
-        label = torch.tensor(label)  # Convert label to tensor
+        label = self.labels.iloc[idx, 1]  # Getting label for image
+        label = self.label_to_idx[label]  # Maping label to index
+        label = torch.tensor(label)  # Convertting label to tensor
 
         if self.transform:
-            image = self.transform(image)  # Apply transformations
+            image = self.transform(image)  # Applying transformations
 
         return image, label
 
 # DataLoader filter function to skip None entries
 def collate_fn(batch):
-    batch = [b for b in batch if b is not None]  # Skip missing images
+    batch = [b for b in batch if b is not None]  # Skipping missing images
     if len(batch) == 0:
         return None, None  # Handle empty batch
 
@@ -63,10 +63,10 @@ def collate_fn(batch):
 transform = transforms.Compose([
     transforms.Resize((224, 224)),  # Resize to 224x224
     transforms.ToTensor(),  # Convert to tensor
-    transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])  # Normalize for VGG19 pre-trained weights
+    transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])  # Normalizing for VGG19 pre-trained weights
 ])
 
-# Set paths for CSV file and image directory
+# Setting the paths for CSV file and image directory
 train_csv = "/content/drive/MyDrive/SoundClassification/train5Filipa.csv"
 img_dir = '/content/drive/MyDrive/SoundClassification/trainIMG/MFCC_images/'
 
@@ -82,28 +82,28 @@ train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
 train_loader = DataLoader(train_dataset, batch_size=parameters.BATCH_SIZE, shuffle=True, collate_fn=collate_fn)
 val_loader = DataLoader(val_dataset, batch_size=parameters.BATCH_SIZE, shuffle=False, collate_fn=collate_fn)
 
-# Load pre-trained VGG19 model and modify for classification
-vgg19 = models.vgg19(weights=models.VGG19_Weights.IMAGENET1K_V1)  # Load pre-trained VGG19
+# Loadded pre-trained VGG19 model and modify for classification
+vgg19 = models.vgg19(weights=models.VGG19_Weights.IMAGENET1K_V1)  # Loadded pre-trained VGG19
 for param in vgg19.features.parameters():
-    param.requires_grad = False  # Freeze convolutional layers
+    param.requires_grad = False  # Freezing convolutional layers
 
-vgg19.classifier = nn.Sequential(  # Update classifier layers for new task
+vgg19.classifier = nn.Sequential(  # Updating classifier layers for new task
     nn.Linear(512 * 7 * 7, 4096),
     nn.ReLU(),
     nn.Dropout(0.37),
     nn.Linear(4096, 4096),
     nn.ReLU(),
     nn.Dropout(0.37),
-    nn.Linear(4096, parameters.NUM_CLASSES),  # Output layer for class count
+    nn.Linear(4096, parameters.NUM_CLASSES),  # the Output layer for class count
     nn.LogSoftmax(dim=1)
 )
 
-# Move model to device (GPU or CPU)
+# Moving model to device (GPU or CPU)
 vgg19 = vgg19.to(device)
 
 # Loss function and optimizer
 criterion = nn.CrossEntropyLoss()  # Cross-entropy loss for classification
-LEARNING_RATE = 0.0002  # Set learning rate directly
+LEARNING_RATE = 0.0002  # Setting learning rate directly
 optimizer = torch.optim.Adam(vgg19.parameters(), lr=LEARNING_RATE)
 
 # Function to calculate accuracy
@@ -129,7 +129,7 @@ def train_model():
 
         for i, batch in enumerate(train_loader):
             if batch is None:
-                continue  # Skip empty batches
+                continue  # Skipping empty batches
 
             images, labels = batch
             images, labels = images.to(device), labels.to(device)
@@ -186,22 +186,22 @@ def train_model():
         train_accuracies.append(train_accuracy.item())
         val_accuracies.append(val_accuracy.item())
 
-        # Print metrics
+        # Printting metrics
         print(f"Epoch [{epoch+1}/{NUM_EPOCHS}], "
               f"Train Loss: {train_loss:.4f}, Train Accuracy: {train_accuracy:.4f}, "
               f"Val Loss: {val_loss:.4f}, Val Accuracy: {val_accuracy:.4f}")
 
-    # Print final training and validation accuracy
+    # Printting final training and validation accuracy
     final_training_accuracy = train_accuracies[-1]
     final_validation_accuracy = val_accuracies[-1]
 
     print(f"\nFinal Training Accuracy: {final_training_accuracy * 100:.2f}%")
     print(f"Final Validation Accuracy: {final_validation_accuracy * 100:.2f}%")
 
-    # Plot training and validation accuracy and loss
+    # Plotting training and validation accuracy and loss
     plt.figure(figsize=(12, 5))
     
-    # Accuracy Plot
+    # Accuracy Plotting
     plt.subplot(1, 2, 1)
     plt.plot(train_accuracies, label="Training Accuracy")
     plt.plot(val_accuracies, label="Validation Accuracy")
@@ -210,7 +210,7 @@ def train_model():
     plt.title("Model Accuracy")
     plt.legend()
 
-    # Loss Plot
+    # Loss Plotting
     plt.subplot(1, 2, 2)
     plt.plot(train_losses, label="Training Loss")
     plt.plot(val_losses, label="Validation Loss")
