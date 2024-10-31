@@ -1,5 +1,6 @@
 '''
-Here is a summary comment:
+A code summary with comments explaining its functionality at necessary points:
+
 This code implements a sound classification model using a pre-trained VGG19 network to classify sound data transformed into MFCC image representations. 
 The dataset is loaded from a CSV file, with images pre-processed and split into training and validation sets. Key operations include defining a custom PyTorch Dataset, setting up data transformations, implementing the training and validation loop, and displaying training metrics. 
 The final output includes accuracy/loss plots and a confusion matrix visualizing model performance.
