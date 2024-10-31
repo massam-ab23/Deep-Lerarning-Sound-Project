@@ -1,5 +1,6 @@
 '''
-A summary comment of the code:
+A code summary with comments explaining its functionality at necessary points:
+
 This script processes audio files in a specified directory and generates three types of visual representations for each audio file: spectrogram, mel-spectrogram, and MFCC. 
 It uses the `librosa` library to load and analyze audio files, creating the corresponding images for each type of representation and saving them in designated directories. 
 The code includes functions for creating each type of image and a main function to process all `.wav` files in a directory.
