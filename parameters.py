@@ -1,5 +1,6 @@
 '''
-A summary comment of the code:
+A code summary with comments explaining its functionality at necessary points:
+
 This `parameters.py` file sets key hyperparameters and configuration values for a sound classification model. 
 It defines parameters such as the number of classes, batch size, learning rate, number of epochs, and device type. 
 It also specifies the directory paths for saving model checkpoints and accessing images, ensuring these values can be easily imported and referenced across various scripts. 
