@@ -1,5 +1,6 @@
 '''
-A summary comment:
+A code summary with comments explaining its functionality at necessary points:
+
 This code trains a modified VGG19 neural network for sound classification, using Mel-spectrogram image representations of sounds. 
 It preprocesses and loads the dataset, defining transformations, a training loop, and validation checks. 
 Key operations include customizing a PyTorch Dataset, setting up data transformations, freezing VGG19 convolution layers, and defining a classifier for sound category output. 
