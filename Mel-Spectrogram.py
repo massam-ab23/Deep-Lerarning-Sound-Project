@@ -1,5 +1,5 @@
 '''
-summary:
+A summary comment:
 This code trains a modified VGG19 neural network for sound classification, using Mel-spectrogram image representations of sounds. 
 It preprocesses and loads the dataset, defining transformations, a training loop, and validation checks. 
 Key operations include customizing a PyTorch Dataset, setting up data transformations, freezing VGG19 convolution layers, and defining a classifier for sound category output. 
@@ -18,7 +18,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import parameters  # This imports all predefined parameters
 
-# Check if GPU is available, otherwise use CPU
+# Checking if GPU is available, otherwise use CPU
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # Custom Dataset for Mel-Spectrogram Images
@@ -29,7 +29,7 @@ class SoundDataset(Dataset):
         self.img_dir = img_dir  # Directory for images
         self.transform = transform  # Image transformations (resize, normalize)
 
-        # Create label-to-index mapping based on CLASS_LIST in parameters
+        # Creating label-to-index mapping based on CLASS_LIST in parameters
         self.label_to_idx = {label: idx for idx, label in enumerate(parameters.CLASS_LIST)}
 
     def __len__(self):
@@ -42,18 +42,18 @@ class SoundDataset(Dataset):
         except FileNotFoundError:
             return None  # Handle missing image case
 
-        label = self.labels.iloc[idx, 1]  # Get label for image
-        label = self.label_to_idx[label]  # Map label to corresponding index
-        label = torch.tensor(label)  # Convert label index to tensor
+        label = self.labels.iloc[idx, 1]  # Getting label for image
+        label = self.label_to_idx[label]  # Mapping label to corresponding index
+        label = torch.tensor(label)  # Convertting label index to tensor
 
         if self.transform:
-            image = self.transform(image)  # Apply transformations
+            image = self.transform(image)  # Applying transformations
 
         return image, label
 
 # DataLoader function to skip None entries
 def collate_fn(batch):
-    batch = [b for b in batch if b is not None]  # Skip missing images
+    batch = [b for b in batch if b is not None]  # Skipping missing images
     if len(batch) == 0:
         return None, None
 
@@ -63,8 +63,8 @@ def collate_fn(batch):
 # Transformations for images (Resizing and Normalization)
 transform = transforms.Compose([
     transforms.Resize((224, 224)),  # Resize to 224x224 for VGG19
-    transforms.ToTensor(),  # Convert image to tensor
-    transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])  # Normalize based on ImageNet values
+    transforms.ToTensor(),  # Convertting image to tensor
+    transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])  # Normalizing based on ImageNet values
 ])
 
 # Define paths for CSV and images
@@ -74,7 +74,7 @@ img_dir = '/content/drive/MyDrive/SoundClassification/trainIMG/Mel_Spectrogram_i
 # Dataset for Mel-Spectrogram Images
 dataset = SoundDataset(csv_file=train_csv, img_dir=img_dir, transform=transform, num_samples=1000)
 
-# Split dataset into 80% train and 20% validation
+# Splitting dataset into 80% train and 20% validation
 train_size = int(0.8 * len(dataset))
 val_size = len(dataset) - train_size
 train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
@@ -83,8 +83,8 @@ train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
 train_loader = DataLoader(train_dataset, batch_size=parameters.BATCH_SIZE, shuffle=True, collate_fn=collate_fn)
 val_loader = DataLoader(val_dataset, batch_size=parameters.BATCH_SIZE, shuffle=False, collate_fn=collate_fn)
 
-# Load pre-trained VGG19 model and modify for classification task
-vgg19 = models.vgg19(weights=models.VGG19_Weights.IMAGENET1K_V1)  # Load VGG19 pretrained on ImageNet
+# Loadded pre-trained VGG19 model and modify for classification task
+vgg19 = models.vgg19(weights=models.VGG19_Weights.IMAGENET1K_V1)  # Loadded VGG19 pretrained on ImageNet
 for param in vgg19.features.parameters():
     param.requires_grad = False  # Freeze convolutional layers
 
@@ -99,7 +99,7 @@ vgg19.classifier = nn.Sequential(
     nn.LogSoftmax(dim=1)
 )
 
-# Move model to device (GPU or CPU)
+# Moving model to device (GPU or CPU)
 vgg19 = vgg19.to(device)
 
 # Loss function and optimizer
@@ -120,7 +120,7 @@ def train_model():
     train_accuracies = []
     val_accuracies = []
 
-    NUM_EPOCHS = 20  # Set number of epochs
+    NUM_EPOCHS = 20  # Setting number of epochs
     for epoch in range(0, NUM_EPOCHS):
 
         vgg19.train()  # Enable training mode
@@ -187,19 +187,19 @@ def train_model():
         train_accuracies.append(train_accuracy.item())
         val_accuracies.append(val_accuracy.item())
 
-        # Print metrics
+        # Printting metrics
         print(f"Epoch [{epoch+1}/{NUM_EPOCHS}], "
               f"Train Loss: {train_loss:.4f}, Train Accuracy: {train_accuracy:.4f}, "
               f"Val Loss: {val_loss:.4f}, Val Accuracy: {val_accuracy:.4f}")
 
-    # Print final training and validation accuracy
+    # Printting final training and validation accuracy
     final_training_accuracy = train_accuracies[-1]
     final_validation_accuracy = val_accuracies[-1]
 
     print(f"\nFinal Training Accuracy: {final_training_accuracy * 100:.2f}%")
     print(f"Final Validation Accuracy: {final_validation_accuracy * 100:.2f}%")
 
-    # Plot training and validation accuracy and loss
+    # Plotting training and validation accuracy and loss
     plt.figure(figsize=(12, 5))
     
     # Accuracy Plot
@@ -223,7 +223,7 @@ def train_model():
     plt.tight_layout()
     plt.show()
 
-    # Plot final confusion matrix
+    # Plotting final confusion matrix
     cm = confusion_matrix(all_labels, all_preds)
     plt.figure(figsize=(8, 6))
     sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=parameters.CLASS_LIST, yticklabels=parameters.CLASS_LIST)
