@@ -1,5 +1,6 @@
 '''
-A summary comment for the code:
+A code summary with comments explaining its functionality at necessary points:
+
 This script processes audio files from a specified directory and generates spectrogram, mel-spectrogram, and MFCC visual representations for each `.wav` file. 
 The `librosa` library is used for loading and transforming audio data, while `matplotlib` is used for plotting and saving the visualizations. 
 Each type of spectrogram is saved as an image in designated directories, and the script ensures the directories are created if they do not already exist.
