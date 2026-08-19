@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 import numpy as np  # Import numpy for handling numerical operations
 
 # Updatting the correct path to the audio directory in Google Drive
-audio_dir = "/content/drive/MyDrive/SoundClassification/Mollie_audio_trainWAV/"
+audio_dir = "./train_audio_wav/"
 
 # Generatting and saving a spectrogram image from an audio file
 def save_spectrogram_image(audio_path, output_image_path):
@@ -84,10 +84,10 @@ def process_audio_to_images(audio_dir, spectrogram_dir, mel_spectrogram_dir, mfc
         print("No .wav files found in the directory.")  # Notify if no .wav files were found
 
 # Updatting these paths to point to your correct directories
-audio_dir = "/content/drive/MyDrive/SoundClassification/Mollie_audio_trainWAV/"  # Directory for audio files
-spectrogram_dir = "/content/drive/MyDrive/SoundClassification/trainIMG/Spectrogram_images/"  # Directory for spectrogram images
-mel_spectrogram_dir = "/content/drive/MyDrive/SoundClassification/trainIMG/Mel_Spectrogram_images/"  # Directory for mel-spectrogram images
-mfcc_dir = "/content/drive/MyDrive/SoundClassification/trainIMG/MFCC_images/"  # Directory for MFCC images
+audio_dir = "./train_audio_wav/"  # Directory for audio files
+spectrogram_dir = "./trainIMG/Spectrogram_images/"  # Directory for spectrogram images
+mel_spectrogram_dir = "./trainIMG/Mel_Spectrogram_images/"  # Directory for mel-spectrogram images
+mfcc_dir = "./trainIMG/MFCC_images/"  # Directory for MFCC images
 
 # Processing the audio files and save the images
 process_audio_to_images(audio_dir, spectrogram_dir, mel_spectrogram_dir, mfcc_dir)
