@@ -81,7 +81,7 @@ def process_audio_to_images(audio_dir, spectrogram_dir, mel_spectrogram_dir, mfc
         print("No .wav files found in the directory.")  # Informing if no .wav files were found
 
 # Updatting these paths to point to your correct directories for test data
-audio_dir = "./Mollie_audio_testWAV/"  # Input directory for test audio files
+audio_dir = "./test_audio_wav/"  # Input directory for test audio files
 spectrogram_dir = "./testIMG/Spectrogram_images/"  # Directory to save spectrogram images
 mel_spectrogram_dir = "./testIMG/Mel_Spectrogram_images/"  # Directory to save mel-spectrogram images
 mfcc_dir = "./testIMG/MFCC_images/"  # Directory to save MFCC images
