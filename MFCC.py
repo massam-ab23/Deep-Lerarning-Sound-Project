@@ -68,8 +68,8 @@ transform = transforms.Compose([
 ])
 
 # Setting the paths for CSV file and image directory
-train_csv = "/content/drive/MyDrive/SoundClassification/train5Filipa.csv"
-img_dir = '/content/drive/MyDrive/SoundClassification/trainIMG/MFCC_images/'
+train_csv = "train_labels.csv"
+img_dir = "data/MFCC_images"
 
 # Dataset for MFCC Images
 dataset = SoundDataset(csv_file=train_csv, img_dir=img_dir, transform=transform, num_samples=1000)
