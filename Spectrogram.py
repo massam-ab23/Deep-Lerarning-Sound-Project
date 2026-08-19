@@ -69,8 +69,8 @@ transform = transforms.Compose([
 ])
 
 # Setting paths for CSV and image directory
-train_csv = "/content/drive/MyDrive/SoundClassification/train5Filipa.csv"
-img_dir = '/content/drive/MyDrive/SoundClassification/trainIMG/Spectrogram_images/'
+train_csv = "data/train_labels.csv"
+img_dir = "data/Spectrogram_images"
 
 # Dataset for Spectrogram Images
 dataset = SoundDataset(csv_file=train_csv, img_dir=img_dir, transform=transform, num_samples=1000)
